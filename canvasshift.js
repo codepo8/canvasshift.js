@@ -79,4 +79,19 @@ const canvasshift = (canvas, offsetx, offsety) => {
     render(slice, image);
   }
 };
+canvasshift.load = (c, url, cb) => {
+  if (!c) {     
+    console.error(`Can't find canvas :(`);
+    return false; 
+  }
+  let cx = c.getContext('2d');
+  let i = new Image();
+  i.src = url;
+  i.onload = function() {
+    c.height = i.naturalHeight;
+    c.width = i.naturalWidth;
+    cx.drawImage(i, 0, 0);
+    if (cb) {cb();}
+  }
+};
 

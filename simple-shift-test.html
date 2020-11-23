@@ -18,48 +18,39 @@
       font-size: 1.1em;
       margin: 0 0 .5em 0;
     }
-    canvas {
-      background: green;
-      margin: 2em 0;
-    }
     button {
-      font-family: inherit;
-      font-size: 1em;
-      background: mediumspringgreen;
+      margin: 2em 0;
+      padding: 0;
       border: none;
     }
-    input[type=number] {
-      width: 3em;
+    script {
+      display: block;
+      white-space: pre;
+      color: #fff;
+      background: #000;
     }
-
-    div {
-      display: flex;
-      gap: 10px;
-      max-width: 25em;
-      padding-bottom: 10px;
-    }
-    button { flex: 1; }
-    label { flex: 3; }
-    input { flex: 2; }
-
   </style>
 </head>
 <body>
 <h1>Shifting an image using HTML canvas</h1>
 <h2>Simple page</h2>
+<p>Click image to shift</p>
+<button></button>
 <script src="canvasshift.js"></script>
 <script>
-    let c = document.createElement('canvas');
-    let cx = c.getContext('2d');
-    document.body.appendChild(c);
-    let i = new Image();
-    i.src = 'puking-unicorn.jpg';
-    i.onload = function() {
-      c.height = i.naturalHeight;
-      c.width = i.naturalWidth;
-      cx.drawImage(i, 0, 0);
-      canvasshift(c, 100, 0);
-    }
+  let c = document.createElement('canvas');
+  let button = document.querySelector('button');
+  button.appendChild(c);
+
+  const shift = _ => {
+    canvasshift(c, -200);
+  }
+  canvasshift.load(c, 'puking-unicorn.jpg', shift);
+
+  button.addEventListener('click', e => {
+    canvasshift(c, 100, 0);
+    e.preventDefault();
+  });
 </script>
 
 </body>
