@@ -1,4 +1,4 @@
-const shiftcanvas = (canvas, offsetx, offsety) => {
+const canvasshift = (canvas, offsetx, offsety) => {
   
   if (!canvas || !canvas.getContext) {
     console.error(`Can't find canvas :(`);
