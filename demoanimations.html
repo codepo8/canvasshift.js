@@ -9,22 +9,30 @@
       width: 300px;
       height: 200px;
       position: relative;
-      background: grey;
+      background: darkkhaki;
+      margin: 1em 3em;
     }
     #slice {
-      background: red;
+      background: burlywood;
       position: absolute;
       z-index: 2;
     }
     #rest {
       position: absolute;
-      background: blue;
+      background: saddlebrown;
     }
     #buttons {
-      margin: 1em 0;
+      margin: 1em 1.5em;
+    }
+    button {
+      font-family: verdana;
+      background: olive;
+      color: white;
+      border: none;
+      padding: 5px 10px;
     }
     .animating #buttons {
-      opacity: .2;
+      opacity: .2
     }
   </style>
 </head>
@@ -63,10 +71,22 @@ let animation = {
       {element: '#rest', x: 20, y: 0, w: 280, h: 200},
     ],
     frames: [
-      {element: '#slice', x: -10, y: -10, up: 1},
+      {element: '#slice', x: -15, y: -10, up: 1},
       {element: '#rest', x: 0},
       {element: '#slice', x: 295, y: -10, up: 1},
       {element: '#slice', x: 280, y: 0}
+    ]
+  },
+  right:{
+    setup: [
+      {element: '#slice', x: 280, y: 0, w: 20, h: 200},
+      {element: '#rest', x: 0, y: 0, w: 280, h: 200}
+    ],
+    frames: [
+      {element: '#slice', x: 295, y: -10, up:1},
+      {element: '#rest', x: 20, y: 0},
+      {element: '#slice', x: -15, y: -10, up: 1},
+      {element: '#slice', x: 0, y: 0}
     ]
   },
   up: {
@@ -91,18 +111,6 @@ let animation = {
       {element: '#rest', x: 0, y: 20},
       {element: '#slice', x: 10, y: 5, up:1},
       {element: '#slice', x: 0, y: 0},
-    ]
-  },
-  right:{
-    setup: [
-      {element: '#slice', x: 280, y: 0, w: 20, h: 200},
-      {element: '#rest', x: 0, y: 0, w: 280, h: 200}
-    ],
-    frames: [
-      {element: '#slice', x: 295, y: -10, up:1},
-      {element: '#rest', x: 20, y: 0},
-      {element: '#slice', x: -10, y: -10, up: 1},
-      {element: '#slice', x: 0, y: 0}
     ]
   },
 };
