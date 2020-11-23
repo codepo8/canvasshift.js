@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demo Animations</title>
+  <title>Demo Animations for Canvas Shifting</title>
   <style>
     #canvas {
       width: 300px;
@@ -26,7 +26,6 @@
     .animating #buttons {
       opacity: .2;
     }
-
   </style>
 </head>
 <body>
@@ -49,13 +48,13 @@
 let buttons = document.querySelector('#buttons');
 let slice = document.querySelector('#slice');
 let rest = document.querySelector('#rest');
+let cssprops = {
+  x:'left', y:'top', w:'width', h:'height', o:'opacity'
+};
 
 let i = 0;
 let ani = null;
 let delay = 1000;
-let props = 0;
-let changes = 0;
-let translate = {x:'left','y':'top',w:'width',h:'height',o:'opacity'};
 
 let animation = {
   left:{
@@ -64,9 +63,10 @@ let animation = {
       {element: '#rest', x: 20, y: 0, w: 280, h: 200},
     ],
     frames: [
-      {element: '#slice', x: 310},
-      {element: '#rest', x: 0, y: 0},
-      {element: '#slice', x: 280}
+      {element: '#slice', x: -10, y: -10, up: 1},
+      {element: '#rest', x: 0},
+      {element: '#slice', x: 295, y: -10, up: 1},
+      {element: '#slice', x: 280, y: 0}
     ]
   },
   up: {
@@ -75,9 +75,9 @@ let animation = {
       {element: '#rest', x: 0, y: 20, w: 300, h: 180}
     ],
     frames: [
-      {element: '#slice', x: 10, y: 5},
-      {element: '#slice', x: 10, y: 175},
+      {element: '#slice', x: 10, y: 5, up:1},
       {element: '#rest', x: 0, y: 0},
+      {element: '#slice', x: 10, y: 175, up:1},
       {element: '#slice', x: 0, y: 180},
     ]
   },
@@ -87,9 +87,9 @@ let animation = {
       {element: '#rest', x: 0, y: 0, w: 300, h: 180}
     ],
     frames: [
-      {element: '#slice', x: 10, y: 175},
+      {element: '#slice', x: 10, y: 175, up:1},
       {element: '#rest', x: 0, y: 20},
-      {element: '#slice', x: 10, y: 5},
+      {element: '#slice', x: 10, y: 5, up:1},
       {element: '#slice', x: 0, y: 0},
     ]
   },
@@ -99,8 +99,9 @@ let animation = {
       {element: '#rest', x: 0, y: 0, w: 280, h: 200}
     ],
     frames: [
-      {element: '#slice', x: 310, y: 0},
+      {element: '#slice', x: 295, y: -10, up:1},
       {element: '#rest', x: 20, y: 0},
+      {element: '#slice', x: -10, y: -10, up: 1},
       {element: '#slice', x: 0, y: 0}
     ]
   },
@@ -113,11 +114,7 @@ document.body.addEventListener('click', e => {
       animation[id].setup.forEach(a => {
         let elm = document.querySelector(a.element);
         elm.style.transition = '';
-        elm.style.top = a.y + 'px';
-        elm.style.left = a.x + 'px';
-        elm.style.width = a.w + 'px';
-        elm.style.height = a.h + 'px';
-        elm.style.opacity = 1;
+        setprops(elm, a);
       });
       i = 0;
       ani = animation[id].frames;
@@ -127,36 +124,32 @@ document.body.addEventListener('click', e => {
   }
 });
 
+const setprops = (elm, a) => {
+  ['x','y','w','h'].forEach(p => {
+    if (a[p] !== undefined) {
+      elm.style[cssprops[p]] = a[p] + 'px';
+    }
+  });
+  if (a.o !== undefined) {
+      elm.style.opacity = `${a.o}`;
+  }
+}
+
 const shift = e => {
   if (ani[i]) {
-    console.log(i,ani[i])
     let elm = document.querySelector(ani[i].element);
     let time = ani[i].time || '1000';
     let delay = ani[i].delay ? ' ' + ani[i].delay+'ms' : '';
-    if (ani[i].y) {
-      elm.style.top = `${ani[i].y}px`;
-    }
-    if (ani[i].x) {
-      elm.style.left = `${ani[i].x}px`;
-    }
-    if (ani[i].w) {
-      elm.style.width = `${ani[i].w}px`;
-    }
-    if (ani[i].h) {
-      elm.style.height = `${ani[i].h}px`;
-    }
-    if (ani[i].o) {
-      elm.style.opacity = `${ani[i].o}`;
-    }
+    setprops(elm,ani[i]);
+    elm.style.boxShadow = (ani[i].up) ? `5px 5px 4px #333` : '';
     elm.style.transition = `all ${time}ms${delay}`;
-    i++;
+     i++;
     let recall = +time + (delay ? delay.replace(' ','') : 0);
     window.setTimeout(shift, recall)
   } else {
     document.body.className = '';
   }
-}
-
+};
 
 </script>
 
