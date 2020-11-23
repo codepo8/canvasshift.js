@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shifting an image using HTML canvas</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: grey;
+      width: 600px;
+      margin: 2em auto;
+    }
+    h1 {
+      font-size: 1.2em;
+    }
+    h2 {font-size: 1.1em}
+    canvas {
+      background: green;
+      margin: 2em 0;
+    }
+    button {
+      font-family: inherit;
+      font-size: 1em;
+      background: mediumspringgreen;
+      border: none;
+    }
+    input[type=number] {
+      width: 3em;
+    }
+
+    div {
+      display: flex;
+      gap: 10px;
+      max-width: 25em;
+      padding-bottom: 10px;
+    }
+    button { flex: 1; }
+    label { flex: 3; }
+    input { flex: 2; }
+
+  </style>
+</head>
+<body>
+
+<h1>Shifting an image using HTML canvas</h1>
+<h2>Test page</h2>
+<h3>CSS Example</h3>
+<pre>
+background: url(puking-unicorn.jpg);
+background-repeat: repeat;
+background-position: <input type="number" id="cssx" value=0> px <input type="number" id="cssy" value=0> px;
+</pre>
+
+<div id="csssolution"></div>
+
+<h3>Canvas Solution</h3>
+
+<div>
+  <button id="down">Down</button>
+  <label for="yoffset">Vertical offset:</label>
+  <input type="number" size="3" min="0" value="1" id="yoffset">
+  <button id="up">Up</button>
+</div>
+<div>
+  <button id="left">Left</button>
+  <label for="xoffset">Horizontal offset:</label>
+  <input type="number" size="3" min="0" value="1" id="xoffset">
+  <button id="right">Right</button>
+</div>
+<div>
+  <button onclick="shiftcanvas(c, -10,0)">-10,0</button>
+  <button onclick="shiftcanvas(c, 0,-23)">0,-23</button>
+  <button onclick="shiftcanvas(right, 10,0)">broken</button>
+  <button onclick="shiftcanvas(c, 0,10)">0,10</button>
+  <button onclick="shiftcanvas(c, -10,10)">-10,10</button>
+</div>
+
+<script src="shiftcanvas.js"></script>
+<script>
+
+    let c = document.createElement('canvas');
+    let cx = c.getContext('2d');
+    document.body.appendChild(c);
+    let i = new Image();
+    i.src = 'puking-unicorn.jpg';
+    i.onload = function() {
+      c.height = i.naturalHeight;
+      c.width = i.naturalWidth;
+      cx.drawImage(i, 0, 0);
+    }
+
+    const getnumbervalues = _ => {
+      shiftcanvas(
+        c,
+        +document.querySelector('#xoffset').value,
+        +document.querySelector('#yoffset').value
+      )
+    };
+
+    const navigate = e => {
+      let direction = e.target.id;
+      let h = +document.querySelector('#xoffset').value;
+      let v = +document.querySelector('#yoffset').value;
+      if (direction) {
+        switch (direction) {
+          case 'down': shiftcanvas(c, 0, v); break;
+          case 'up': shiftcanvas(c, 0, -v); break;
+          case 'left': shiftcanvas(c, -h, 0); break;
+          case 'right': shiftcanvas(c, h, 0); break;
+        }
+      }
+    };
+
+    let $ = x => { return document.querySelector(x) };
+
+    $('#xoffset').addEventListener('change',getnumbervalues)
+    $('#yoffset').addEventListener('change',getnumbervalues)
+    $('#up').addEventListener('click',navigate)
+    $('#down').addEventListener('click',navigate)
+    $('#left').addEventListener('click',navigate)
+    $('#right').addEventListener('click',navigate)
+
+    c.width = c.height = 100;
+    cx.fillRect(30,30,50,50);
+
+    let csscontainer = document.querySelector('#csssolution');
+    let img = new Image();
+    img.src = 'puking-unicorn.jpg';
+    img.onload = function() {
+      csscontainer.style.background = `url(puking-unicorn.jpg)`;
+      csscontainer.style.width = img.naturalWidth + 'px';
+      csscontainer.style.height = img.naturalHeight + 'px';
+    }
+    const getcssvalues = _ => {
+      let pos = `${+document.querySelector('#cssx').value}px ${+document.querySelector('#cssy').value}px`;
+      csscontainer.style.backgroundPosition = pos;
+    };
+
+    $('#cssx').addEventListener('change',getcssvalues)
+    $('#cssy').addEventListener('change',getcssvalues)
+
+    // let x = 0;
+    // let y = 0;
+    // let ix = 0;
+    // let iw = csscontainer.style.width / 2;
+    // let ih = csscontainer.style.height / 2;
+    // const move = _ => {
+    //   x = 100 * Math.cos(ix) + iw;
+    //   y = 50 * Math.sin(ix) + ih;
+    //   ix += .1;
+    //   let pos = `${x}px ${y}px`;
+    //   csscontainer.style.backgroundPosition = pos;
+    //   requestAnimationFrame(move);
+    // }
+    // requestAnimationFrame(move);
+</script>
+
+</body>
+</html>
