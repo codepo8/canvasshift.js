@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shifting an image using HTML canvas</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: grey;
+      margin: 1em;
+    }
+    h1 {
+      font-size: 1.2em;
+      margin: 0 0 .5em 0;
+    }
+    h2 {
+      font-size: 1.1em;
+      margin: 0 0 .5em 0;
+    }
+    canvas {
+      background: green;
+      margin: 2em 0;
+    }
+    button {
+      font-family: inherit;
+      font-size: 1em;
+      background: mediumspringgreen;
+      border: none;
+    }
+    input[type=number] {
+      width: 3em;
+    }
+
+    div {
+      display: flex;
+      gap: 10px;
+      max-width: 25em;
+      padding-bottom: 10px;
+    }
+    button { flex: 1; }
+    label { flex: 3; }
+    input { flex: 2; }
+
+  </style>
+</head>
+<body>
+<h1>Shifting an image using HTML canvas</h1>
+<h2>Simple page</h2>
+<script src="canvasshift.js"></script>
+<script>
+    let c = document.createElement('canvas');
+    let cx = c.getContext('2d');
+    document.body.appendChild(c);
+    let i = new Image();
+    i.src = 'puking-unicorn.jpg';
+    i.onload = function() {
+      c.height = i.naturalHeight;
+      c.width = i.naturalWidth;
+      cx.drawImage(i, 0, 0);
+      canvasshift(c, 100, 0);
+    }
+</script>
+
+</body>
+</html>
