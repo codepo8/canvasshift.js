@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shifting an image using HTML canvas</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:#333;
+      max-width: 600px;
+      margin: 2em auto;
+      color: #fff;
+      padding: 1em;
+    }
+    h1 {
+      font-size: 1.2em;
+    }
+    h2 {font-size: 1.1em}
+    canvas {
+      background: green;
+      margin: 2em 0;
+    }
+    input[type=number] {
+      width: 3em;
+    }
+
+    div {
+      display: flex;
+      gap: 10px;
+      max-width: 25em;
+      padding-bottom: 10px;
+    }
+    button { border: none; }
+    pre {
+      background: #000;
+      padding: 5px;
+      border: 1px inset #666;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Shifting an image using CSS</h1>
+<pre>
+background: url(puking-unicorn.jpg);
+background-repeat: repeat;
+background-position: 
+  <input type="range" id="cssx" value=0 max="300"> <span id="vcssx">0</span>px 
+  <input type="range" id="cssy" value=0 max="300"> <span id="vcssy">0</span>px;
+</pre>
+
+<button id="csssolution"></button>
+
+
+<script>
+  let x = 0;
+  let y = 0;
+  let ix = 0;
+  let iw = 0;
+  let ih = 0;
+  let shaka = null;
+
+  const cx = document.querySelector('#cssx');
+  const cy = document.querySelector('#cssy');
+  const vcx = document.querySelector('#vcssx');
+  const vcy = document.querySelector('#vcssy');
+  const csscontainer = document.querySelector('#csssolution');
+  const button = document.querySelector('button');
+  let fancy = false;
+  
+  let img = new Image();
+  img.src = 'puking-unicorn.jpg';
+  img.onload = function() {
+    csscontainer.style.background = `url(puking-unicorn.jpg)`;
+    iw = img.naturalWidth;
+    ih = img.naturalHeight;
+    csscontainer.style.width = iw + 'px';
+    csscontainer.style.height = ih + 'px';
+    cx.max = iw;
+    cy.max = ih;
+  }
+
+
+  const getcssvalues = _ => {
+    let pos = `${+cx.value}px ${+cy.value}px`;
+    csscontainer.style.backgroundPosition = pos;
+    vcx.innerText = +cx.value;
+    vcy.innerText = +cy.value;
+  };
+
+  cx.addEventListener('change',getcssvalues)
+  cy.addEventListener('change',getcssvalues)
+
+  const move = _ => {
+    x = 100 * Math.cos(ix) + iw/2;
+    y = 50 * Math.sin(ix) + ih/2;
+    ix += .1;
+    let pos = `${x}px ${y}px`;
+    csscontainer.style.backgroundPosition = pos;
+    shaka = requestAnimationFrame(move);
+    setsliders(x,y);
+  }
+  const setsliders = (x,y) => {
+    cx.value = x;
+    cy.value = y;
+    vcx.innerText = x|0;
+    vcy.innerText = y|0;
+  }
+
+  button.addEventListener('click', e => {
+    fancy = !fancy;
+    if (fancy) {
+      move();
+    } else {
+      setsliders(x,y);
+      cancelAnimationFrame(shaka);
+    }
+  });
+</script>
+
+</body>
+</html>

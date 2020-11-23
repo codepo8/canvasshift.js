@@ -45,17 +45,6 @@
 
 <h1>Shifting an image using HTML canvas</h1>
 <h2>Test page</h2>
-<h3>CSS Example</h3>
-<pre>
-background: url(puking-unicorn.jpg);
-background-repeat: repeat;
-background-position: <input type="number" id="cssx" value=0> px <input type="number" id="cssy" value=0> px;
-</pre>
-
-<div id="csssolution"></div>
-
-<h3>Canvas Solution</h3>
-
 <div>
   <button id="down">Down</button>
   <label for="yoffset">Vertical offset:</label>
@@ -124,36 +113,6 @@ background-position: <input type="number" id="cssx" value=0> px <input type="num
     c.width = c.height = 100;
     cx.fillRect(30,30,50,50);
 
-    let csscontainer = document.querySelector('#csssolution');
-    let img = new Image();
-    img.src = 'puking-unicorn.jpg';
-    img.onload = function() {
-      csscontainer.style.background = `url(puking-unicorn.jpg)`;
-      csscontainer.style.width = img.naturalWidth + 'px';
-      csscontainer.style.height = img.naturalHeight + 'px';
-    }
-    const getcssvalues = _ => {
-      let pos = `${+document.querySelector('#cssx').value}px ${+document.querySelector('#cssy').value}px`;
-      csscontainer.style.backgroundPosition = pos;
-    };
-
-    $('#cssx').addEventListener('change',getcssvalues)
-    $('#cssy').addEventListener('change',getcssvalues)
-
-    // let x = 0;
-    // let y = 0;
-    // let ix = 0;
-    // let iw = csscontainer.style.width / 2;
-    // let ih = csscontainer.style.height / 2;
-    // const move = _ => {
-    //   x = 100 * Math.cos(ix) + iw;
-    //   y = 50 * Math.sin(ix) + ih;
-    //   ix += .1;
-    //   let pos = `${x}px ${y}px`;
-    //   csscontainer.style.backgroundPosition = pos;
-    //   requestAnimationFrame(move);
-    // }
-    // requestAnimationFrame(move);
 </script>
 
 </body>
