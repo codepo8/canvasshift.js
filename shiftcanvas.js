@@ -10,8 +10,7 @@ const shiftcanvas = (canvas, offsetx, offsety) => {
   let slice = {};
   let image = {};
 
-  if (Math.abs(offsetx) >= c.width ||
-  Math.abs(offsety) >= c.height) {
+  if (Math.abs(offsetx) >= c.width || Math.abs(offsety) >= c.height) {
     console.error('Offset out of range');
     return false;
   }

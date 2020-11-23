@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shifting an image using HTML canvas</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: grey;
+      padding: 1em 2em;
+    }
+    h1 {
+      font-size: 1.2em;
+    }
+    h2 {font-size: 1.1em}
+    canvas {
+      background: green;
+      margin: 2em 0;
+    }
+    button {
+      font-family: inherit;
+      font-size: 1em;
+      background: mediumspringgreen;
+      border: none;
+    }
+    input[type=number] {
+      width: 3em;
+    }
+
+    div {
+      display: flex;
+      gap: 10px;
+      max-width: 25em;
+      padding-bottom: 10px;
+    }
+    button { flex: 1; }
+    label { flex: 3; }
+    input { flex: 2; }
+    div::after {
+      content: '';
+      width: 1px;
+      height: 250px;
+      left: 100px;
+      top: -5px;
+      border-left: 1px dashed #000;
+      position: absolute;
+    }
+    div::before {
+      content: '✂️';
+      left: 91px;
+      top: -10px;
+      position: absolute;
+    }
+    div {position: relative;}
+  </style>
+</head>
+<body>
+
+<h1>Shifting an image using HTML canvas</h1>
+<h2>Simple example</h2>
+<p>Click image to slice and move.</p>
+<div></div>
+
+<script>
+
+
+    // Create canvas, store context and add to DIV
+    let c = document.createElement('canvas');
+    let cx = c.getContext('2d');
+    document.querySelector('div').appendChild(c);
+
+    // load image and 
+    // resize canvas to be the same size as the image
+    let i = new Image();
+    i.src = 'puking-unicorn.jpg';
+    i.onload = function() {
+      c.height = i.naturalHeight;
+      c.width = i.naturalWidth;
+      cx.drawImage(i, 0, 0);
+    }
+    
+    // Slice method to shift image 
+    const slice = _ => {
+      // get image data from the top left to 100px from the left
+      // store it as slice
+      let slicedata = cx.getImageData(0, 0, 100, c.height);
+      // get image data from the 100px left to the end of the image
+      // store it as slice
+      let restdata = cx.getImageData(100, 0, c.width, c.height);
+      // clear the canvas (not needed, but safe)
+      cx.clearRect(0, 0, c.width, c.height);
+      // put the restdata to the top left of the canvas
+      cx.putImageData(restdata, 0, 0);
+      // put the slice data 100px from the right on the canvas
+      cx.putImageData(slicedata, c.width - 100,0);
+    }
+
+    // if the user clicks on the image, move it
+    c.addEventListener('click', slice)
+
+
+</script>
+
+</body>
+</html>
