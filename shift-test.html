@@ -58,14 +58,14 @@
   <button id="right">Right</button>
 </div>
 <div>
-  <button onclick="shiftcanvas(c, -10,0)">-10,0</button>
-  <button onclick="shiftcanvas(c, 0,-23)">0,-23</button>
-  <button onclick="shiftcanvas(right, 10,0)">broken</button>
-  <button onclick="shiftcanvas(c, 0,10)">0,10</button>
-  <button onclick="shiftcanvas(c, -10,10)">-10,10</button>
+  <button onclick="canvasshift(c, -10,0)">-10,0</button>
+  <button onclick="canvasshift(c, 0,-23)">0,-23</button>
+  <button onclick="canvasshift(right, 10,0)">broken</button>
+  <button onclick="canvasshift(c, 0,10)">0,10</button>
+  <button onclick="canvasshift(c, -10,10)">-10,10</button>
 </div>
 
-<script src="shiftcanvas.js"></script>
+<script src="canvasshift.js"></script>
 <script>
 
     let c = document.createElement('canvas');
@@ -93,10 +93,10 @@
       let v = +document.querySelector('#yoffset').value;
       if (direction) {
         switch (direction) {
-          case 'down': shiftcanvas(c, 0, v); break;
-          case 'up': shiftcanvas(c, 0, -v); break;
-          case 'left': shiftcanvas(c, -h, 0); break;
-          case 'right': shiftcanvas(c, h, 0); break;
+          case 'down': canvasshift(c, 0, v); break;
+          case 'up': canvasshift(c, 0, -v); break;
+          case 'left': canvasshift(c, -h, 0); break;
+          case 'right': canvasshift(c, h, 0); break;
         }
       }
     };
