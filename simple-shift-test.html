@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background: grey;
+      background: #4caf50;
       margin: 1em;
     }
     h1 {
@@ -23,14 +23,25 @@
       padding: 0;
       border: none;
     }
-    script {
+    script:not([src]) {
       display: block;
       white-space: pre;
+      padding: 0 1em 1em 1em;
       color: #fff;
       background: #000;
+      position: relative;
     }
-  </style>
-</head>
+    script:not([src])::before {
+      content: "Source code (JavaScript):";
+      background: orchid;
+      width: auto;
+      display: block;
+      position: fixed;
+      padding: 2px 5px;
+      margin: -1em 0 0 -0.5em;
+    }
+    </style>
+  </head>
 <body>
 <h1>Shifting an image using HTML canvas</h1>
 <h2>Simple page</h2>
@@ -38,19 +49,17 @@
 <button></button>
 <script src="canvasshift.js"></script>
 <script>
-  let c = document.createElement('canvas');
-  let button = document.querySelector('button');
-  button.appendChild(c);
+let c = document.createElement('canvas');
+let button = document.querySelector('button');
+button.appendChild(c);
 
-  const shift = _ => {
-    canvasshift(c, -200);
-  }
-  canvasshift.load(c, 'puking-unicorn.jpg', shift);
-
+const shift = _ => {
   button.addEventListener('click', e => {
     canvasshift(c, 100, 0);
     e.preventDefault();
   });
+}
+canvasshift.load(c, 'puking-unicorn.jpg', shift);
 </script>
 
 </body>
